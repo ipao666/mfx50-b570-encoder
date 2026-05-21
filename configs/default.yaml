@@ -1,0 +1,30 @@
+# x265-optimizer shared configuration
+# Paths: use absolute or relative to project root
+
+ffmpeg:
+  path: ffmpeg  # override via env FFMPEG_PATH
+
+x265:
+  path: ./x265/bin/x265.exe
+  preset: medium
+  tune: ssim
+
+video:
+  default_width: 1920
+  default_height: 1080
+  default_fps: 30
+  default_duration: 10
+
+nvenc:
+  preset: p1
+  rate_control: vbr
+  bitrate: 2500k
+
+qsv:
+  preset: veryslow
+  rate_control: vbr
+  bitrate: 2500k
+
+output:
+  base_dir: ./output
+  format: csv  # csv | json | both

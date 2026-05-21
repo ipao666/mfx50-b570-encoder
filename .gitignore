@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+
+# Benchmark artifacts: keep summaries, not encoded outputs
+benchmarks/**/artifacts/
+benchmarks/**/run.log
+benchmarks/**/run.err.log
+benchmarks/smoke*/
+benchmarks/local*/
+
+# Generated media and raw inputs
+*.mp4
+*.mov
+*.mkv
+*.avi
+*.hevc
+*.h265
+*.yuv
+
+# Native build outputs and bundled encoders
+x265/
+ffmpeg/
+*.exe
+*.dll
+*.lib
+*.obj
+*.pdb
+*.ilk
+*.sln
+*.vcxproj
+*.vcxproj.filters
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+x64/
+Release/
+Debug/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,26 @@
+# NVENC Concurrency Benchmark — Example Config
+# Copy to bench_config.yaml and edit. CLI args override these values.
+
+ffmpeg: ffmpeg
+input: "D:\\videos\\source_1080p30.mp4"
+out_dir: "./benchmark_output"
+
+# Video normalization
+duration: 10
+width: 1920
+height: 1080
+fps: 30
+
+# Encode settings
+preset: p1              # benchmark preset (fastest)
+sample_preset: p4       # sample normalization preset (higher quality)
+rate_control: vbr
+bitrate: 2500k
+
+# Sweep mode — required
+min_concurrency: 12
+max_concurrency: 124
+step: 4
+
+# GPU to monitor
+gpu_index: 0

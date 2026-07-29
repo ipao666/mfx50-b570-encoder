@@ -1,5 +1,7 @@
 # MFX50 B570 Encoder
 
+[简体中文](README.zh-CN.md)
+
 MFX50 B570 Encoder is a C/C++ video transcoding SDK and reference implementation for Intel B570 hardware. It provides a realtime pipeline, adaptive QP and ROI policy components, oneVPL integration, command-line probes, and validation tests.
 
 ## Features

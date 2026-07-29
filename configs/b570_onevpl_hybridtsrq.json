@@ -1,0 +1,70 @@
+{
+  "sdk": {
+    "api_version": 1,
+    "log_level": "info"
+  },
+  "backend": {
+    "type": "onevpl",
+    "device_index": 0,
+    "prefer_hw_decode": true,
+    "prefer_hw_encode": true,
+    "prefer_video_memory": true,
+    "prefer_zero_copy": true,
+    "async_depth": 4,
+    "low_latency": true,
+    "backend_options": {
+      "implementation": "hw"
+    }
+  },
+  "pipeline": {
+    "input_codec": "auto",
+    "output_codec": "hevc",
+    "width": 0,
+    "height": 0,
+    "fps": "auto",
+    "gop_size": 60,
+    "idr_interval": 120,
+    "b_frames": 0,
+    "rate_control": "auto",
+    "target_bitrate_kbps": 0,
+    "max_bitrate_kbps": 0,
+    "annexb_output": true
+  },
+  "algorithm": {
+    "name": "hybridtsrq",
+    "profile": "target_90_ssim_guard",
+    "strategy": "auto",
+    "target_compression_percent": 90,
+    "avg_ssim_target": 0.90,
+    "min_ssim_guard": 0.82,
+    "temporal_qp": true,
+    "adaptive_gop": true,
+    "scene_cut_idr": true,
+    "b_frame_policy": "auto",
+    "spatial_qp": true,
+    "roi": true,
+    "mbqp": "auto",
+    "roi_delta_qp": "auto",
+    "fast_analyzer": true,
+    "heavy_analyzer": true,
+    "heavy_analyze_interval": 5,
+    "preprocess": "auto",
+    "quality_guard": true,
+    "quality_guard_hold_frames": 60,
+    "fallback": {
+      "if_mbqp_unsupported": "roi_delta_qp",
+      "if_roi_unsupported": "global",
+      "if_overload": "reduce_analysis_first"
+    }
+  },
+  "runtime": {
+    "route_count": 45,
+    "worker_threads": 45,
+    "queue_depth_per_route": 8,
+    "async_mode": true
+  },
+  "trace": {
+    "enable_decision_trace": false,
+    "trace_every_n_frames": 30
+  }
+}

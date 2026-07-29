@@ -1,55 +1,44 @@
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-.pytest_cache/
-.coverage
-htmlcov/
-.mypy_cache/
-.ruff_cache/
-.venv/
-venv/
+# Build outputs
 build/
-dist/
-*.egg-info/
+build*/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+Testing/
+compile_commands.json
 
-# Benchmark artifacts: keep summaries, not encoded outputs
-benchmarks/**/artifacts/
-benchmarks/**/run.log
-benchmarks/**/run.err.log
-benchmarks/smoke*/
-benchmarks/local*/
+# Native artifacts
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.dll
+*.lib
+*.exe
+*.pdb
+*.log
 
-# Generated media and raw inputs
+# Python artifacts
+*.pyc
+__pycache__/
+
+# Generated media and temporary inputs
 *.mp4
 *.mov
 *.mkv
 *.avi
 *.hevc
 *.h265
+*.h264
+*.264
 *.yuv
+dist/
+tmp/
 
-# Native build outputs and bundled encoders
-x265/
-ffmpeg/
-*.exe
-*.dll
-*.lib
-*.obj
-*.pdb
-*.ilk
-*.sln
-*.vcxproj
-*.vcxproj.filters
-CMakeCache.txt
-CMakeFiles/
-cmake_install.cmake
-x64/
-Release/
-Debug/
-
-# OS/editor
+# Local environment and editor metadata
 .DS_Store
 Thumbs.db
 .vscode/

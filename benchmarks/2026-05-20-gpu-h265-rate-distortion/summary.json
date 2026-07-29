@@ -1,9 +1,0 @@
-{
-  "samples": 10,
-  "completed": 10,
-  "mean_size_reduction_pct": 31.274323501535143,
-  "mean_ssim_delta": -0.001813700000000007,
-  "mean_psnr_delta": -0.973687800000001,
-  "mean_baseline_bitrate_kbps": 1389.923,
-  "mean_improved_bitrate_kbps": 898.7860746666668
-}

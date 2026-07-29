@@ -1,0 +1,38 @@
+{
+  "backend": {
+    "type": "null",
+    "async_depth": 2,
+    "low_latency": true
+  },
+  "pipeline": {
+    "input_codec": "auto",
+    "output_codec": "hevc",
+    "gop_size": 60,
+    "idr_interval": 120,
+    "b_frames": 0,
+    "rate_control": "cqp"
+  },
+  "algorithm": {
+    "name": "hybridtsrq",
+    "profile": "safe",
+    "strategy": "global",
+    "target_compression_percent": 70,
+    "avg_ssim_target": 0.90,
+    "min_ssim_guard": 0.82,
+    "temporal_qp": true,
+    "spatial_qp": false,
+    "roi": false,
+    "mbqp": false,
+    "roi_delta_qp": false,
+    "fast_analyzer": true,
+    "heavy_analyzer": false,
+    "preprocess": "auto",
+    "quality_guard": true
+  },
+  "runtime": {
+    "route_count": 1,
+    "worker_threads": 1,
+    "queue_depth_per_route": 8,
+    "async_mode": true
+  }
+}

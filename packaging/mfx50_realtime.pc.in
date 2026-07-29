@@ -1,0 +1,10 @@
+prefix=${pcfiledir}/../..
+exec_prefix=${prefix}
+libdir=${pcfiledir}/..
+includedir=${pcfiledir}/../../include
+
+Name: mfx50_realtime
+Description: MFX50 native oneVPL realtime HEVC SDK
+Version: @MFX50RT_PACKAGE_VERSION@
+Libs: -L${libdir} -lmfx50_realtime
+Cflags: -I${includedir}

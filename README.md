@@ -1,132 +1,70 @@
-# x265-optimizer
+# MFX50 B570 Encoder
 
-GPU H.265 rate-distortion benchmark and optimization toolkit for real surveillance-style video.
+MFX50 B570 Encoder is a C/C++ video transcoding SDK and reference implementation for Intel B570 hardware. It provides a realtime pipeline, adaptive QP and ROI policy components, oneVPL integration, command-line probes, and validation tests.
 
-The project compares an ordinary H.265/NVENC baseline with an improved GPU H.265 configuration that uses a higher quality preset and adaptive quantization. The goal is simple: reduce encoded size while keeping SSIM and PSNR close to the baseline.
+## Features
 
-## Result Snapshot
+- H.264 input to H.265/HEVC output through oneVPL
+- B570-oriented multi-route realtime transcoding
+- Adaptive QP, MBQP, ROI, scene analysis, and quality-guard policies
+- Public C and C++ APIs for integration
+- JSON configuration, CLI examples, packaging scripts, and tests
 
-Benchmark: 10 real videos, 5 minutes per sample, concurrent GPU encoding.
+## Requirements
 
-| Metric | Result |
-| --- | ---: |
-| Completed samples | 10 / 10 |
-| Mean size reduction | 31.27% |
-| Mean SSIM delta | -0.001814 |
-| Mean PSNR delta | -0.974 dB |
-| Baseline bitrate | 1389.9 kbps |
-| Improved bitrate | 898.8 kbps |
+- Linux x86_64
+- Intel B570 GPU and a usable DRM render node
+- oneVPL runtime/development library (`vpl` or `mfx-gen`)
+- libva and libva-drm development libraries
+- CMake 3.16 or newer and a C++17 compiler
 
-![Benchmark summary](docs/assets/benchmark-summary.svg)
+Optional RTSP/UDP demos require FFmpeg development libraries.
 
-Full benchmark files are in [`benchmarks/2026-05-20-gpu-h265-rate-distortion`](benchmarks/2026-05-20-gpu-h265-rate-distortion).
+## Build
 
-## What Is Compared
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --parallel
+ctest --test-dir build --output-on-failure
+```
 
-Baseline:
+If the target host exposes the B570 through a different render node, set `DEVICE` before running the examples:
 
-- Encoder: `hevc_nvenc`
-- Preset: `p4`
-- Tune: `hq`
-- Rate control: `vbr`
-- Constant quality: `cq=28`
-
-Improved:
-
-- Encoder: `hevc_nvenc`
-- Preset: `p7`
-- Tune: `hq`
-- Rate control: `vbr`
-- Constant quality: `cq=34`
-- Adaptive quantization: spatial AQ and temporal AQ enabled
-- B-frame references enabled
-
-The improved configuration is intentionally more aggressive on compression. The benchmark reports SSIM and PSNR so the quality cost is visible instead of hidden.
+```bash
+export DEVICE=/dev/dri/renderD129
+```
 
 ## Quick Start
 
-Install runtime dependencies:
+The repository includes a basic transcode example and B570-oriented scripts under `examples/b570_fastpath/`.
 
 ```bash
-python -m venv .venv
-.\.venv\Scripts\activate
-python -m pip install -U pip
-python -m pip install -r requirements.txt
+export LD_LIBRARY_PATH="$PWD/build:$LD_LIBRARY_PATH"
+./build/bench_real_45_files \
+  video_list_1.txt 0 65536 1 onevpl /tmp/mfx50_out_ \
+  none target_90_ssim_guard 60 120 0 "" \
+  "width=1280,height=720,fps_num=25,fps_den=1"
 ```
 
-External tools:
-
-- FFmpeg with `hevc_nvenc` support
-- NVIDIA GPU and driver
-- `nvidia-smi` for environment metadata
-
-Run the benchmark:
-
-```bash
-python tools/run_gpu_h265_benchmark.py ^
-  --dataset E:\Video_Compression\5.6 ^
-  --output-dir benchmarks\local-gpu-h265-rate-distortion ^
-  --count 10 ^
-  --seconds 300 ^
-  --workers 4 ^
-  --baseline-cq 28 ^
-  --improved-cq 34
-```
-
-Outputs:
-
-- `README.md`: GitHub-friendly benchmark report
-- `results.csv`: spreadsheet-friendly full table
-- `results.json`: machine-readable per-sample results
-- `summary.json`: aggregate values
-- `environment.json`: reproducibility metadata
-- `artifacts/`: encoded videos and logs, ignored by Git by default
+See [docs/B570_VIDEO_COMPRESSION_FLOW.md](docs/B570_VIDEO_COMPRESSION_FLOW.md), [docs/B570_CURRENT_LIMITS.md](docs/B570_CURRENT_LIMITS.md), and [docs/BACKEND_GUIDE.md](docs/BACKEND_GUIDE.md) for architecture, validated constraints, and backend behavior.
 
 ## Repository Layout
 
 ```text
-tools/
-  run_gpu_h265_benchmark.py       # Main GPU H.265 benchmark
-  run_rate_distortion_benchmark.py # Experimental x265/scene-aware runner
-src/
-  *.py                            # Earlier benchmark and pipeline utilities
-benchmarks/
-  2026-05-20-gpu-h265-rate-distortion/
-    README.md
-    results.csv
-    results.json
-    summary.json
-    environment.json
-docs/
-  assets/
-    benchmark-summary.svg
+include/       Public headers
+src/           Runtime, policy, algorithm, and backend implementation
+examples/      Integration examples and B570 run scripts
+tools/         Diagnostic and transcoding command-line tools
+tests/         C and C++ test programs
+configs/       Runtime configuration examples
+docs/          API, algorithm, and operational documentation
+packaging/     SDK packaging helpers
 ```
 
-## Important Notes
+## Notes
 
-This repository intentionally does not bundle FFmpeg, x265 binaries, generated videos, or private source videos. Those files are large and can introduce license or privacy risk.
-
-The published benchmark keeps only summary/report files. Encoded outputs under `artifacts/` are reproducible and ignored by Git.
-
-## Development
-
-Run syntax checks:
-
-```bash
-python -m py_compile tools\run_gpu_h265_benchmark.py tools\run_rate_distortion_benchmark.py
-```
-
-Run a short smoke benchmark:
-
-```bash
-python tools/run_gpu_h265_benchmark.py ^
-  --dataset E:\Video_Compression\5.6 ^
-  --output-dir benchmarks\smoke ^
-  --count 2 ^
-  --seconds 10 ^
-  --workers 2
-```
+This repository contains source code only. It does not include video samples, generated media, prebuilt binaries, or vendor runtime libraries. Hardware capability and quality results depend on the installed driver, oneVPL implementation, input material, and runtime configuration.
 
 ## License
 
-MIT License. This project depends on external encoders and drivers; check FFmpeg, NVIDIA, and x265 licenses separately when redistributing binaries or derived artifacts.
+Released under the [MIT License](LICENSE).
